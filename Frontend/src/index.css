@@ -4,6 +4,33 @@
 
 
 :root {
-    background-color: rgb(249, 250, 241);
+    background-color: rgb(255, 255, 255);
     font-family: 'Open Sans';
+}
+
+body::-webkit-scrollbar {
+    width: 6px;               /* width of the entire scrollbar */
+}
+
+body::-webkit-scrollbar-track {
+background: rgb(0, 0, 0);        /* color of the tracking area */
+}
+
+body::-webkit-scrollbar-thumb {
+background-color: rgb(48, 48, 48);    /* color of the scroll thumb */
+border-radius: 20px;       /* roundness of the scroll thumb */
+/* border: 3px solid orange;  creates padding around scroll thumb */
+}
+
+
+
+.container-scrollbar::-webkit-scrollbar{
+    width: 6px;               /* width of the entire scrollbar */
+}
+.container-scrollbar::-webkit-scrollbar-track {
+    background: rgb(202, 202, 202);        /* color of the tracking area */
+}
+.container-scrollbar::-webkit-scrollbar-thumb {
+    background-color: rgb(168, 168, 168);    /* color of the scroll thumb */
+    border-radius: 20px;       /* roundness of the scroll thumb */
 }

@@ -3,6 +3,9 @@ import {Routes,Route} from "react-router-dom";
 import Home from "../pages/main/HomePage";
 import AdminPage from "../pages/main/AdminPage";
 import Page404 from "../pages/others/Page404";
+import TypingTests from "../pages/features/typing/TypingTests";
+import Footer from "../components/Footer";
+import Test from "../pages/features/typing/Test";
 
 
 // Here add the diversion for auth pages and other pages
@@ -10,11 +13,13 @@ import Page404 from "../pages/others/Page404";
 const RouteViews = () => {
 
   return (
-      <Routes>
-        <Route exact path="/" element={<Home/>} />
-        <Route exact path="/admin" element={<AdminPage/>} />
-        <Route path="*" element={<Page404/>} />
-      </Routes>
+    <Routes>
+      <Route exact path="/" element={<><Home/><Footer /></>} />
+      <Route exact path="/admin" element={<AdminPage/>} />
+      <Route exact path="/typing-tests" element={<TypingTests/>} />
+      <Route exact path="/typing-tests/:id" element={<Test/>} />
+      <Route path="*" element={<Page404/>} />
+    </Routes>
   )
 }
 
