@@ -25,6 +25,10 @@ const stenoTestSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  audio_url: {
+    type: String,
+    required: true,
+  },
 });
 
 const StenoTest = mongoose.model("StenoTest", stenoTestSchema);

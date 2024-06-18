@@ -29,6 +29,7 @@ const RouteViews = () => {
       <Route exact path="/typing-tests/:id" element={<Test />} />
       <Route exact path="/register" element={<Register />} />
       <Route exact path="/login" element={<Login />} />
+
       <Route path="*" element={<Page404 />} />
     </Routes>
   );

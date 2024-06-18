@@ -1,5 +1,6 @@
 import express from "express";
 import User from "../model/user.js";
+import UserHistory from "../model/userHistory.js";
 import { generateToken } from "../jwt.js";
 
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -84,4 +85,19 @@ const getUser = asyncHandler(async (req, res) => {
   }
 });
 
-export { registerUser, loginUser, getUser };
+const getUserHistory = asyncHandler(async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const userHistory = await UserHistory.find({ user_id: userId }).populate(
+      "test_id"
+    );
+
+    res.status(200).json(userHistory);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+export { registerUser, loginUser, getUser, getUserHistory };
