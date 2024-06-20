@@ -8,6 +8,8 @@ import Footer from "../components/Footer";
 import Test from "../pages/features/typing/Test";
 import Register from "../pages/auth/Register";
 import Login from "../pages/auth/Login";
+import HindiTest from "../pages/features/typing/HindiTest";
+import Navbar from "../components/Navbar";
 
 // Here add the diversion for auth pages and other pages
 
@@ -19,6 +21,7 @@ const RouteViews = () => {
         path="/"
         element={
           <>
+            <Navbar />
             <Home />
             <Footer />
           </>
@@ -26,6 +29,7 @@ const RouteViews = () => {
       />
       <Route exact path="/admin" element={<AdminPage />} />
       <Route exact path="/typing-tests" element={<TypingTests />} />
+      <Route exact path="/typing-tests/hindi" element={<HindiTest />} />
       <Route exact path="/typing-tests/:id" element={<Test />} />
       <Route exact path="/register" element={<Register />} />
       <Route exact path="/login" element={<Login />} />

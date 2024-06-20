@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { LuTimer } from "react-icons/lu";
 import { RiExpandLeftFill } from "react-icons/ri";
 import { ImFontSize } from "react-icons/im";
@@ -6,16 +6,238 @@ import { FiMinus } from "react-icons/fi";
 import { FaPlus } from "react-icons/fa6";
 
 import { cn } from "../../../lib/utils";
-import TypingTextBox from "../../../components/TypingTextBox";
+import ResultModal from "../../../components/ResultModal";
 
 const Test = () => {
+  const timerRef = useRef(null);
+
   const [time, setTime] = useState(true);
   const [backspace, setBackspace] = useState(true);
-  const [timeSelected, setTimeSelected] = useState(1);
+  const [timeSelected, setTimeSelected] = useState(0.1);
   const [fontSize, setFontSize] = useState(20);
 
-  const readBox = useRef(null);
-  const writeBox = useRef(null);
+  const [testText, setTestText] = useState("");
+  const [inputText, setInputText] = useState("");
+
+  const [openModal, setOpenModal] = useState(false);
+  const [modalData, setModalData] = useState({});
+  const [modalTextDetails, setModalTextDetails] = useState({});
+  const [timer, setTimer] = useState("01:00");
+
+  const [testState, setTestState] = useState(0);
+
+  const getTimeRemaining = (e) => {
+    const total = Date.parse(e) - Date.parse(new Date());
+    const seconds = Math.floor((total / 1000) % 60);
+    const minutes = Math.floor((total / 1000 / 60) % 60);
+    return {
+      total,
+      minutes,
+      seconds,
+    };
+  };
+
+  const startTimer = (e) => {
+    let { total, minutes, seconds } = getTimeRemaining(e);
+    if (total >= 0) {
+      setTimer(
+        (minutes > 9 ? minutes : "0" + minutes) +
+          ":" +
+          (seconds > 9 ? seconds : "0" + seconds)
+      );
+      if (total == 0) setTestState(-1);
+    }
+  };
+
+  const clearTimer = (e) => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    const id = setInterval(() => {
+      startTimer(e);
+    }, 1000);
+    timerRef.current = id;
+  };
+
+  const getTestEndTime = () => {
+    let deadline = new Date();
+    deadline.setSeconds(deadline.getSeconds() + timeSelected * 60);
+    return deadline;
+  };
+
+  const onClickRestartTimer = () => {
+    // run this function to restart the timer
+    clearTimer(getTestEndTime());
+  };
+
+  useEffect(() => {
+    if (testState == -1) {
+      handleTestComplete();
+    }
+  }, [testState]);
+
+  const handleOnKeyDown = (e) => {
+    if (testState == 0) {
+      console.log(testState);
+      setTestState(1);
+      // setStartTimerVar(true);
+      clearTimer(getTestEndTime());
+    }
+  };
+
+  const handleOnChange = (e) => {
+    console.log(e.target.value.length);
+    if (
+      (e.target.value.length == 1 &&
+        e.target.value[e.target.value.length - 1] == " ") ||
+      (e.target.value.length >= 2 &&
+        e.target.value[e.target.value.length - 1] == " " &&
+        e.target.value[e.target.value.length - 2] == " ")
+    ) {
+      // do nothing
+      console.log("calll");
+    } else setInputText(e.target.value);
+  };
+
+  const handleTestComplete = () => {
+    // and set modal to true
+    setOpenModal(true);
+    setInputText((prev) => prev.trim());
+    console.log(inputText);
+
+    // const isLastCharSpace = inputText[inputText.length - 1] === " " ? 1 : 0;
+
+    // here calculate all things that we need to show in the modal
+    const inputArr = inputText.trim().split(/\s+/);
+    const correctArr = testText.trim().split(/\s+/);
+
+    console.log(inputArr);
+    console.log(correctArr);
+
+    var result = {
+      correctWords: 0,
+      totalWords: 0, // total words typed by user
+      incorrectChar: 0,
+      missedChar: 0,
+      totalChar: 0, // total chars typed by user
+      grossWpm: 0,
+      netWpm: 0,
+      cpm: 0,
+      accuracy: 0,
+    };
+
+    var incorrectCharList = [[-1, -1]];
+    var missingCharList = [];
+
+    for (let i = 0; i < inputArr.length; i++) {
+      // inputArr[i] = inputArr[i].trim();
+      // correctArr[i] = correctArr[i].trim();
+
+      console.log(correctArr[i]);
+      if (inputArr[i] == correctArr[i]) {
+        result.correctWords++;
+      } else {
+        if (inputArr[i].length < correctArr[i].length) {
+          // when input word length is less than the correct word
+          for (let j = 0; j < inputArr[i].length; j++) {
+            if (inputArr[i][j] != correctArr[i][j]) {
+              result.incorrectChar++;
+              incorrectCharList.push([i, j]);
+            }
+          }
+          // include the index in missing char list
+          missingCharList.push([i, inputArr[i].length]);
+        } else {
+          for (let j = 0; j < correctArr[i].length; j++) {
+            if (inputArr[i][j] != correctArr[i][j]) {
+              result.incorrectChar++;
+              incorrectCharList.push([i, j]);
+              console.log("pushed", i, j, incorrectCharList);
+            }
+          }
+          if (inputArr[i].length > correctArr[i].length) {
+            // when overflow of words
+            result.incorrectChar += inputArr[i].length - correctArr[i].length;
+            for (let j = correctArr[i].length; j < inputArr[i].length; j++) {
+              incorrectCharList.push([i, j]);
+            }
+          }
+        }
+      }
+
+      result.totalWords++;
+
+      result.totalChar += inputArr[i].length;
+      // if (i === inputArr.length - 1) {
+      //   result.totalChar += inputArr[i].length + Number(isLastCharSpace);
+      // } else result.totalChar += inputArr[i].length + 1;
+    }
+
+    incorrectCharList.shift();
+
+    console.log(result.totalChar);
+
+    if (result.totalChar != 0) {
+      result.grossWpm = (result.totalChar + 5 - 1) / 5 / timeSelected;
+      result.netWpm =
+        result.grossWpm - incorrectCharList.length / timeSelected > 0
+          ? result.grossWpm - incorrectCharList.length / timeSelected
+          : 0;
+      result.accuracy =
+        ((result.totalChar - result.incorrectChar) * 100) / result.totalChar;
+    } else {
+      result.totalWords = 0;
+    }
+
+    setModalData(result);
+    setModalTextDetails({
+      lastLetter: [
+        inputArr.length - 1,
+        inputArr[inputArr.length - 1].length - 1,
+      ],
+      inputArr,
+      correctArr,
+      incorrectCharList: incorrectCharList,
+    });
+    console.log("on page before");
+    console.log("this is modal text details ", modalTextDetails);
+  };
+
+  const testReset = () => {
+    if (timeSelected == 1) setTimer("01:00");
+    else if (timeSelected == 2) setTimer("02:00");
+    else if (timeSelected == 3) setTimer("03:00");
+    else if (timeSelected == 4) setTimer("04:00");
+    else if (timeSelected == 5) setTimer("05:00");
+    else if (timeSelected == 10) setTimer("10:00");
+    else if (timeSelected == 0.1) setTimer("01:00");
+
+    setInputText("");
+    setModalData({});
+    setModalTextDetails({});
+    setTestState(0);
+    setOpenModal(false);
+  };
+
+  useEffect(() => {
+    (function () {
+      const providedText = ` This   is the entire text lorem ipsum m Ipsum is simply dummy text of the
+        printing and typesetting industry. Lorem Ipsum has been the industry's
+        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
+        printing and typesetting industry. Lorem Ipsum has been the industry's
+        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
+        printing and typesetting industry. Lorem Ipsum has been the industry's
+        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
+        printing and typesetting industry. Lorem Ipsum has been the industry's
+        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
+        printing and typesetting industry. Lorem Ipsum has been the industry's
+        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
+        printing and typesetting industry. Lorem Ipsum has been the industry's
+        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
+        printing and typesetting industry. Lorem Ipsum has been the industry's
+        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
+        printing and typesetting industry. Lorem Ipsum has been the industrys`;
+      setTestText(providedText.trim());
+    })();
+  }, [inputText]);
 
   return (
     <main className="flex flex-col min-h-[100vh] pb-10 bg-gray-100 px-20">
@@ -40,7 +262,10 @@ const Test = () => {
               className={cn("hover:text-black cursor-pointer", {
                 "text-blue-800": timeSelected == 1,
               })}
-              onClick={() => setTimeSelected(1)}
+              onClick={() => {
+                setTimer("01:00");
+                setTimeSelected(1);
+              }}
             >
               1
             </span>
@@ -48,7 +273,10 @@ const Test = () => {
               className={cn("hover:text-black cursor-pointer", {
                 "text-blue-800": timeSelected == 2,
               })}
-              onClick={() => setTimeSelected(2)}
+              onClick={() => {
+                setTimer("02:00");
+                setTimeSelected(2);
+              }}
             >
               2
             </span>
@@ -56,7 +284,10 @@ const Test = () => {
               className={cn("hover:text-black cursor-pointer", {
                 "text-blue-800": timeSelected == 3,
               })}
-              onClick={() => setTimeSelected(3)}
+              onClick={() => {
+                setTimer("03:00");
+                setTimeSelected(3);
+              }}
             >
               3
             </span>
@@ -64,7 +295,10 @@ const Test = () => {
               className={cn("hover:text-black cursor-pointer", {
                 "text-blue-800": timeSelected == 4,
               })}
-              onClick={() => setTimeSelected(4)}
+              onClick={() => {
+                setTimer("04:00");
+                setTimeSelected(4);
+              }}
             >
               4
             </span>
@@ -72,7 +306,10 @@ const Test = () => {
               className={cn("hover:text-black cursor-pointer", {
                 "text-blue-800": timeSelected == 5,
               })}
-              onClick={() => setTimeSelected(5)}
+              onClick={() => {
+                setTimer("05:00");
+                setTimeSelected(5);
+              }}
             >
               5
             </span>
@@ -80,7 +317,10 @@ const Test = () => {
               className={cn("hover:text-black cursor-pointer", {
                 "text-blue-800": timeSelected == 10,
               })}
-              onClick={() => setTimeSelected(10)}
+              onClick={() => {
+                setTimer("10:00");
+                setTimeSelected(10);
+              }}
             >
               10
             </span>
@@ -134,31 +374,33 @@ const Test = () => {
         </div>
       </div>
       <div
-        className={cn("w-[100%] mt-[5rem] bg-gray-300 h-[17rem] overflow-auto py-4 px-6 rounded-lg select-none", "container-scrollbar")}
+        className={cn(
+          "w-[100%] my-[5rem] bg-gray-300 h-[17rem] overflow-auto py-4 px-6 rounded-lg select-none",
+          "container-scrollbar"
+        )}
         style={{ fontSize }}
       >
-        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
-        printing and typesetting industry. Lorem Ipsum has been the industry's
-        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
-        printing and typesetting industry. Lorem Ipsum has been the industry's
-        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
-        printing and typesetting industry. Lorem Ipsum has been the industry's
-        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
-        printing and typesetting industry. Lorem Ipsum has been the industry's
-        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
-        printing and typesetting industry. Lorem Ipsum has been the industry's
-        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
-        printing and typesetting industry. Lorem Ipsum has been the industry's
-        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
-        printing and typesetting industry. Lorem Ipsum has been the industry's
-        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
-        printing and typesetting industry. Lorem Ipsum has been the industry's
+        {testText}
       </div>
+      <p className="text-[1.2rem] font-semibold text-gray-500">{timer}</p>
       <textarea
-        className={cn("w-[100%] mt-[5rem] h-[17rem] overflow-auto py-4 px-6 rounded-lg select-none border-[0.1rem] border-gray-400", "container-scrollbar")}
+        className={cn(
+          "w-[100%] h-[17rem] overflow-auto py-4 px-6 rounded-lg select-none border-[0.1rem] border-gray-400",
+          "container-scrollbar"
+        )}
         style={{ fontSize }}
-      >
-      </textarea>
+        spellCheck="false"
+        value={inputText}
+        onChange={(e) => handleOnChange(e)}
+        onKeyDown={(e) => handleOnKeyDown(e)}
+      />
+      <ResultModal
+        open={openModal}
+        data={modalData}
+        otherDetails={{ time: timeSelected, backspace, language: "English" }}
+        textDetails={modalTextDetails}
+        reset={testReset}
+      />
     </main>
   );
 };
