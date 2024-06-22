@@ -1,8 +1,9 @@
 import express from "express";
 import cors from "cors";
 import userRouter from "./routes/user.js";
-import testRouter from "./routes/test.js";
+import adminRouter from "./routes/admin.js";
 import stenoTestRoutes from "./routes/stenotest.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -14,9 +15,10 @@ app.use(
 );
 
 app.use(express.json());
+app.use(cookieParser());
 
 app.use("/api/v1/user", userRouter);
-app.use("/api/v1/tests", testRouter);
+app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/stenoTests", stenoTestRoutes);
 
 export { app };

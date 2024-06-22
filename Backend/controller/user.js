@@ -1,7 +1,7 @@
 import express from "express";
 import User from "../model/user.js";
 import UserHistory from "../model/userHistory.js";
-import { generateToken } from "../jwt.js";
+import { generateToken } from "../utils/jwt.js";
 
 import { asyncHandler } from "../utils/asyncHandler.js";
 
@@ -11,26 +11,18 @@ const router = express.Router();
 const registerUser = asyncHandler(async (req, res) => {
   try {
     const data = req.body;
-    console.log(req.body);
-
-    const existingAdmin = await User.findOne({ role: "admin" });
-
-    if (data.role === existingAdmin) {
-      return res.status(403).json({
-        message:
-          "An admin user already exists. Only one admin user is allowed.",
-      });
-    }
+    console.log(data.fullName);
 
     // Create a new User document using the Mongoose model
-    const newUser = new User(data);
-
-    // Save the new user to the database
-    const response = await newUser.save();
-    console.log("data saved");
+    const newUser = await User.create({
+      name: data.fullName,
+      email: data.email,
+      password: data.password,
+      phonenumber: data.phone,
+    });
 
     const payload = {
-      id: response.id,
+      id: newUser.id,
     };
     console.log(JSON.stringify(payload));
 
@@ -38,7 +30,18 @@ const registerUser = asyncHandler(async (req, res) => {
     const token = generateToken(payload);
     console.log("Token is:", token);
 
-    res.status(200).json({ response: response, token: token });
+    const options = {
+      expires: new Date(
+        Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+      ),
+      httpOnly: true,
+    };
+
+    console.log(options);
+    res
+      .status(201)
+      .cookie("token", token, options)
+      .json({ success: true, user: newUser, token: token });
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Internal Server Error" });
@@ -62,8 +65,17 @@ const loginUser = asyncHandler(async (req, res) => {
     };
     const token = generateToken(payload);
 
-    //return token as response
-    res.json({ token });
+    const options = {
+      expires: new Date(
+        Date.now() + process.env.COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+      ),
+      httpOnly: true,
+    };
+
+    res
+      .status(201)
+      .cookie("token", token, options)
+      .json({ success: true, user, token: token });
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Internal server error" });
@@ -72,13 +84,10 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const getUser = asyncHandler(async (req, res) => {
   try {
-    const userData = req.user;
-    console.log("User Data:", userData);
+    const user = req.user;
+    // console.log("User Data:", userData);
 
-    const userId = userData.id;
-    const user = await User.findById(userId);
-
-    res.status(200).json({ user });
+    res.status(200).json({ success: true, user });
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Internal server error" });

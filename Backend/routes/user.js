@@ -5,7 +5,7 @@ import {
   loginUser,
   registerUser,
 } from "../controller/user.js";
-import { jwtAuthMiddleware } from "../jwt.js";
+import { jwtAuthMiddleware } from "../utils/jwt.js";
 
 const router = Router();
 
