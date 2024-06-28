@@ -14,6 +14,8 @@ import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import { getUserDetails } from "../actions/user/userController";
 import ProfilePage from "../pages/main/ProfilePage";
+import StenoTests from "../pages/features/steno/StenoTests";
+import StenoTest from "../pages/features/steno/Test";
 
 const RouteViews = () => {
   const navigate = useNavigate();
@@ -115,6 +117,26 @@ const RouteViews = () => {
           <>
             <Navbar />
             <Test />
+          </>
+        }
+      />
+      <Route
+        exact
+        path="/steno-tests"
+        element={
+          <>
+            <Navbar />
+            <StenoTests />
+          </>
+        }
+      />
+      <Route
+        exact
+        path="/steno-tests/:id"
+        element={
+          <>
+            <Navbar />
+            <StenoTest />
           </>
         }
       />

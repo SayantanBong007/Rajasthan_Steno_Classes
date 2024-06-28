@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useTable } from "react-table";
 
-const Table = ({ columns, data }) => {
+const Table = ({ columns, data, typeOfTests }) => {
 
     const navigate = useNavigate();
 
@@ -21,7 +21,7 @@ const Table = ({ columns, data }) => {
   
   const handleClick = (index) => {
     console.log(data[index].id);
-    navigate(`/typing-tests/${data[index].id}`);
+    navigate(`/${typeOfTests}/${data[index].id}`);
   }
 
   return (
