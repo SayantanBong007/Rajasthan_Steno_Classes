@@ -203,7 +203,16 @@ const HindiTest = () => {
         if (stackOfKeys.length) {
           let lastKey = stackOfKeys.pop();
           // console.log("keymap of ", lastKey, " ", keyMap.get(lastKey));
-          setInputText((prev) => prev.slice(0, -keyMap.get(lastKey)));
+          if(lastKey === "Z"){
+            // special case of 'Z'
+            // it will only happen when lastLetterZWJ is false because it does not use zwj in its char list
+ 
+ 
+            if(inputText.length>3){
+              // when 'Z' is not used as the first letter of hindi
+              setInputText((prev) => prev.slice(0, -3) + prev.slice(-1));
+            }else setInputText((prev)=> "");
+          }else setInputText((prev) => prev.slice(0, -keyMap.get(lastKey)));
         }
       }
     } else if (key == " ") {
