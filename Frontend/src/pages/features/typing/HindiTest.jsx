@@ -43,16 +43,82 @@ keyMap.set("\\", 1);
 keyMap.set("|", 1);
 keyMap.set("a", 1);
 keyMap.set("A", 1);
-
+keyMap.set("s", 1);
+keyMap.set("S", 1);
+keyMap.set("d", 1);
+keyMap.set("D", 2);
+keyMap.set("f", 1);
+keyMap.set("F", 2);
+keyMap.set("g", 1);
+keyMap.set("G", 1);
+keyMap.set("h", 1);
+keyMap.set("H", 2);
+keyMap.set("j", 1);
+keyMap.set("J", 3);
+keyMap.set("k", 1);
+keyMap.set("K", 3);
+keyMap.set("l", 1);
+keyMap.set("L", 2);
+keyMap.set(";", 1);
+keyMap.set(":", 2);
+keyMap.set(`'`, 2);
+keyMap.set(`"`, 2);
+keyMap.set("z", 2);
+keyMap.set("Z", 2);
+keyMap.set("x", 1);
+keyMap.set("X", 2);
+keyMap.set("c", 1);
+keyMap.set("C", 2);
+keyMap.set("v", 1);
+keyMap.set("V", 1);
+keyMap.set("b", 1);
+keyMap.set("B", 1);
+keyMap.set("n", 1);
+keyMap.set("N", 1);
+keyMap.set("m", 1);
+keyMap.set("M", 1);
+keyMap.set(",", 1);
+keyMap.set("<", 1);
+keyMap.set(".", 2);
+keyMap.set(">", 1);
+keyMap.set("/", 2);
+keyMap.set("?", 2);
+keyMap.set("`", 1);
+keyMap.set("~", 1);
+keyMap.set("~", 1);
+keyMap.set("1", 1);
+keyMap.set("!", 1);
+keyMap.set("2", 1);
+keyMap.set("@", 1);
+keyMap.set("3", 1);
+keyMap.set("#", 2);
+keyMap.set("4", 1);
+keyMap.set("$", 1);
+keyMap.set("5", 1);
+keyMap.set("%", 1);
+keyMap.set("6", 1);
+keyMap.set("^", 1);
+keyMap.set("7", 1);
+keyMap.set("&", 1);
+keyMap.set("8", 1);
+keyMap.set("*", 1);
+keyMap.set("9", 1);
+keyMap.set("(", 1);
+keyMap.set("0", 1);
+keyMap.set(")", 3);
+keyMap.set("-", 1);
+keyMap.set("_", 1);
+keyMap.set("=", 3);
+keyMap.set("+", 1);
 
 const HindiTest = () => {
   const ZWJ = "0x200D";
-
+  const [stackOfKeys, setStackOfKeys] = useState([]);
   const timerRef = useRef(null);
 
   const [time, setTime] = useState(true);
   const [backspace, setBackspace] = useState(true);
-  const [timeSelected, setTimeSelected] = useState(0.1);
+  const [timeSelected, setTimeSelected] = useState(1);
   const [fontSize, setFontSize] = useState(20);
 
   const [testText, setTestText] = useState("");
@@ -124,46 +190,69 @@ const HindiTest = () => {
     }
 
     if (key == "Backspace") {
-      if (
-        inputText.length > 1 &&
-        inputText[inputText.length - 1] == String.fromCharCode("0x94D")
-      ) {
-        setInputText((prev) => prev.slice(0, -2));
-      } else setInputText((prev) => (prev ? prev.slice(0, -1) : prev));
+      console.log("stack ", stackOfKeys);
+      console.log("inputText length ", inputText.length);
+      console.log("is zwj ", lastLetterZWJ);
+
+      if (lastLetterZWJ) {
+        if (stackOfKeys.length) {
+          let lastKey = stackOfKeys.pop();
+          setInputText((prev) => prev.slice(0, -(keyMap.get(lastKey) + 1)));
+        }
+      } else {
+        if (stackOfKeys.length) {
+          let lastKey = stackOfKeys.pop();
+          // console.log("keymap of ", lastKey, " ", keyMap.get(lastKey));
+          setInputText((prev) => prev.slice(0, -keyMap.get(lastKey)));
+        }
+      }
     } else if (key == " ") {
-      if (lastLetterZWJ)
-        setInputText((prev) => prev.slice(0, -1) + String.fromCharCode(" "));
-      else setInputText((prev) => prev + " ");
+      if (lastLetterZWJ) {
+        console.log("testing ", inputText, "ending");
+        setInputText((prev) => prev.slice(0, -1) + " ");
+        console.log("testing ", inputText, "ending");
+      } else setInputText((prev) => prev + " ");
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "q") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0935")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0941"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "Q") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x092B")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x092B"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "w") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0942")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0942"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "W") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0945")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0945"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "e") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x092E")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x092E"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "E") {
       if (lastLetterZWJ)
         setInputText(
@@ -181,12 +270,16 @@ const HindiTest = () => {
             String.fromCharCode("0x94D") +
             String.fromCharCode(ZWJ)
         );
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "r") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0924")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0924"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "R") {
       if (lastLetterZWJ)
         setInputText(
@@ -204,12 +297,16 @@ const HindiTest = () => {
             String.fromCharCode("0x94D") +
             String.fromCharCode(ZWJ)
         );
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "t") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x091C")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x091C"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "T") {
       if (lastLetterZWJ)
         setInputText(
@@ -227,12 +324,16 @@ const HindiTest = () => {
             String.fromCharCode("0x94D") +
             String.fromCharCode(ZWJ)
         );
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "y") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0932")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0932"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "Y") {
       if (lastLetterZWJ)
         setInputText(
@@ -250,12 +351,16 @@ const HindiTest = () => {
             String.fromCharCode("0x94D") +
             String.fromCharCode(ZWJ)
         );
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "u") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0928")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0928"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "U") {
       if (lastLetterZWJ)
         setInputText(
@@ -273,12 +378,16 @@ const HindiTest = () => {
             String.fromCharCode("0x94D") +
             String.fromCharCode(ZWJ)
         );
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "i") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x092A")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x092A"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "I") {
       if (lastLetterZWJ)
         setInputText(
@@ -296,12 +405,16 @@ const HindiTest = () => {
             String.fromCharCode("0x94D") +
             String.fromCharCode(ZWJ)
         );
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "o") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0935")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0935"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "O") {
       if (lastLetterZWJ)
         setInputText(
@@ -319,12 +432,16 @@ const HindiTest = () => {
             String.fromCharCode("0x94D") +
             String.fromCharCode(ZWJ)
         );
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "p") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x091A")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x091A"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "P") {
       if (lastLetterZWJ)
         setInputText(
@@ -342,12 +459,16 @@ const HindiTest = () => {
             String.fromCharCode("0x94D") +
             String.fromCharCode(ZWJ)
         );
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "[") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0916")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0916"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "{") {
       if (lastLetterZWJ)
         setInputText(
@@ -369,12 +490,16 @@ const HindiTest = () => {
             String.fromCharCode("0x94D") +
             String.fromCharCode(ZWJ)
         );
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "]") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x002C")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x002C"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "}") {
       if (lastLetterZWJ)
         setInputText(
@@ -394,48 +519,64 @@ const HindiTest = () => {
             String.fromCharCode("0x0935") +
             String.fromCharCode(ZWJ)
         );
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "\\") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x003F")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x003F"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "|") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0918")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0918"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "a") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0902")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0902"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "A") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0964")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0964"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "s") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0947")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0947"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "S") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0948")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0948"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "d") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0915")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0915"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "D") {
       if (lastLetterZWJ)
         setInputText(
@@ -453,12 +594,16 @@ const HindiTest = () => {
             String.fromCharCode("0x094D") +
             String.fromCharCode(ZWJ)
         );
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "f") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x093F")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x093F"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "F") {
       if (lastLetterZWJ)
         setInputText(
@@ -476,24 +621,32 @@ const HindiTest = () => {
             String.fromCharCode("0x094D") +
             String.fromCharCode(ZWJ)
         );
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "g") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0939")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0939"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "G") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0933")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0933"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "h") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0940")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0940"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "H") {
       if (lastLetterZWJ)
         setInputText(
@@ -511,12 +664,16 @@ const HindiTest = () => {
             String.fromCharCode("0x094D") +
             String.fromCharCode(ZWJ)
         );
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "j") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0930")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0930"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "J") {
       if (lastLetterZWJ)
         setInputText(
@@ -537,20 +694,15 @@ const HindiTest = () => {
             String.fromCharCode(ZWJ)
         );
 
-      setInputText(
-        (prev) =>
-          prev +
-          String.fromCharCode("0x0936") +
-          String.fromCharCode("0x094D") +
-          String.fromCharCode("0x0930") +
-          String.fromCharCode(ZWJ)
-      );
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "k") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x093E")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x093E"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "K") {
       if (lastLetterZWJ)
         setInputText(
@@ -571,20 +723,15 @@ const HindiTest = () => {
             String.fromCharCode(ZWJ)
         );
 
-      setInputText(
-        (prev) =>
-          prev +
-          String.fromCharCode("0x091C") +
-          String.fromCharCode("0x094D") +
-          String.fromCharCode("0x091E") +
-          String.fromCharCode(ZWJ)
-      );
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "l") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0938")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0938"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "L") {
       if (lastLetterZWJ)
         setInputText(
@@ -602,12 +749,16 @@ const HindiTest = () => {
             String.fromCharCode("0x094D") +
             String.fromCharCode(ZWJ)
         );
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == ";") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x092F")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x092F"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == ":") {
       if (lastLetterZWJ)
         setInputText(
@@ -625,6 +776,8 @@ const HindiTest = () => {
             String.fromCharCode("0x0942") +
             String.fromCharCode(ZWJ)
         );
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == `'`) {
       if (lastLetterZWJ)
         setInputText(
@@ -642,6 +795,8 @@ const HindiTest = () => {
             String.fromCharCode("0x094D") +
             String.fromCharCode(ZWJ)
         );
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == `"`) {
       if (lastLetterZWJ)
         setInputText(
@@ -660,13 +815,7 @@ const HindiTest = () => {
             String.fromCharCode(ZWJ)
         );
 
-      setInputText(
-        (prev) =>
-          prev +
-          String.fromCharCode("0x0937") +
-          String.fromCharCode("0x094D") +
-          String.fromCharCode(ZWJ)
-      );
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "z") {
       if (lastLetterZWJ)
         setInputText(
@@ -684,11 +833,9 @@ const HindiTest = () => {
             String.fromCharCode("0x0930") +
             String.fromCharCode(ZWJ)
         );
-    } else if (key == "Z") {
-      // if (lastLetterZWJ)
-      //   setInputText((prev) => prev.slice(0, -1) + "TohandleRightNow");
-      // else setInputText((prev) => prev + "TohandleRightNow");
 
+      setStackOfKeys((prev) => [...prev, key]);
+    } else if (key == "Z") {
       if (lastLetterZWJ)
         setInputText(
           (prev) =>
@@ -705,14 +852,16 @@ const HindiTest = () => {
             String.fromCharCode("0x094D") +
             prev.slice(-1)
         );
-    }
 
-    if (key == "x") {
+      setStackOfKeys((prev) => [...prev, key]);
+    } else if (key == "x") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0917")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0917"));
+
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "X") {
       if (lastLetterZWJ)
         setInputText(
@@ -730,12 +879,14 @@ const HindiTest = () => {
             String.fromCharCode("0x094D") +
             String.fromCharCode(ZWJ)
         );
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "c") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x092C")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x092C"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "C") {
       if (lastLetterZWJ)
         setInputText(
@@ -753,66 +904,77 @@ const HindiTest = () => {
             String.fromCharCode("0x094D") +
             String.fromCharCode(ZWJ)
         );
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "v") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + tring.fromCharCode("0x0905")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0905"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "V") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x091F")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x091F"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "b") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0907")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0907"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "B") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0920")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0920"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "n") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0926")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0926"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "N") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x091B")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x091B"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "m") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0909")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0909"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "M") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0921")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0921"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == ",") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x090F")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x090F"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "<") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0922")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0922"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == ".") {
       if (lastLetterZWJ)
         setInputText(
@@ -830,12 +992,14 @@ const HindiTest = () => {
             String.fromCharCode("0x094D") +
             String.fromCharCode(ZWJ)
         );
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == ">") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x091D")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x091D"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "/") {
       if (lastLetterZWJ)
         setInputText(
@@ -853,6 +1017,7 @@ const HindiTest = () => {
             String.fromCharCode("0x094D") +
             String.fromCharCode(ZWJ)
         );
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "?") {
       if (lastLetterZWJ)
         setInputText(
@@ -870,48 +1035,56 @@ const HindiTest = () => {
             String.fromCharCode("0x094D") +
             String.fromCharCode(ZWJ)
         );
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "`") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0943")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0943"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "~") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x094D")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x094D"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "1") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0967")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0967"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "!") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0021")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0021"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "2") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0968")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0968"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "@") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x002F")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x002F"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "3") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0969")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0969"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "#") {
       if (lastLetterZWJ)
         setInputText(
@@ -925,84 +1098,98 @@ const HindiTest = () => {
           (prev) =>
             prev + String.fromCharCode("0x0930") + String.fromCharCode("0x0941")
         );
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "4") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x096A")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x096A"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "$") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x002B")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x002B"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "5") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x096B")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x096B"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "%") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x003A")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x003A"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "6") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x096C")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x096C"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "^") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x2018")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x2018"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "7") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x096D")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x096D"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "&") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x2212")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x2212"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "8") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x096E")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x096E"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "*") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x2019")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x2019"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "9") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x096F")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x096F"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "(") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x003B")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x003B"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "0") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x0966")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x0966"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == ")") {
       if (lastLetterZWJ)
         setInputText(
@@ -1022,18 +1209,21 @@ const HindiTest = () => {
             String.fromCharCode("0x0927") +
             String.fromCharCode(ZWJ)
         );
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "-") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x002E")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x002E"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "_") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x090B")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x090B"));
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "=") {
       if (lastLetterZWJ)
         setInputText(
@@ -1054,12 +1244,14 @@ const HindiTest = () => {
             String.fromCharCode(ZWJ)
         );
       }
+      setStackOfKeys((prev) => [...prev, key]);
     } else if (key == "+") {
       if (lastLetterZWJ)
         setInputText(
           (prev) => prev.slice(0, -1) + String.fromCharCode("0x093C")
         );
       else setInputText((prev) => prev + String.fromCharCode("0x093C"));
+      setStackOfKeys((prev) => [...prev, key]);
     }
   };
 
@@ -1083,6 +1275,7 @@ const HindiTest = () => {
       console.log("this .. ");
 
       handleHindikey(e.key);
+      console.log(stackOfKeys);
     }
   };
 
@@ -1097,12 +1290,21 @@ const HindiTest = () => {
     setInputText((prev) => prev.trim());
     console.log(inputText);
 
-    // const isLastCharSpace = inputText[inputText.length - 1] === " " ? 1 : 0;
+    // if last char typed by user is ZWJ, then we need to remove it while checking
+    const isLastCharZWJ =
+      inputText[inputText.length - 1] === String.fromCharCode(ZWJ) ? 1 : 0;
 
     // here calculate all things that we need to show in the modal
-    const inputArr = inputText.trim().split(/\s+/);
+
+    let inputArr = [];
+    if (isLastCharZWJ) {
+      inputArr = inputText.slice(0, -1).split(/\s+/);
+    } else inputArr = inputText.trim().split(/\s+/);
     const correctArr = testText.trim().split(/\s+/);
 
+    // let lst = inputArr[inputArr.length - 1];
+    // console.log(lst, "end");
+    // console.log(lst[lst.length - 1] == String.fromCharCode(ZWJ)? "yes": "no", "end");
     console.log(inputArr);
     console.log(correctArr);
 
