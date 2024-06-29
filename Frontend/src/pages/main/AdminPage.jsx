@@ -83,7 +83,7 @@ const AdminPage = () => {
             "container-scrollbar"
           )}
         >
-          <Table columns={typingTestColumns} data={data} />
+          <Table columns={typingTestColumns} data={data} typeOfTests="typing-tests" />
         </div>
         <div className="mt-[3rem] mb-[1rem] flex items-center justify-between">
           <h2 className="text-[1.8rem]">Steno tests</h2>
@@ -95,7 +95,7 @@ const AdminPage = () => {
             "container-scrollbar"
           )}
         >
-          <Table columns={typingTestColumns} data={data} />
+          <Table columns={typingTestColumns} data={data} typeOfTests="steno-tests" />
         </div>
       </div>
       <DeleteTestModal

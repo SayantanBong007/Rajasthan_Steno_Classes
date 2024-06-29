@@ -7,10 +7,10 @@ import { FaPlus } from "react-icons/fa6";
 
 import { cn } from "../../../lib/utils";
 import ResultModal from "../../../components/ResultModal";
+import AudioElement from "../../../components/AudioElement";
+import ActionButton from "../../../components/ActionButton";
 
-
-
-const Test = () => {
+const StenoTest = () => {
   const timerRef = useRef(null);
 
   const [time, setTime] = useState(true);
@@ -248,85 +248,6 @@ const Test = () => {
           Test Name
         </h1>
         <div className="flex items-center bg-gray-300 text-gray-500 py-3 rounded-lg mt-[2rem] divide-x-2 divide-gray-400">
-          <div className="flex items-center gap-4 px-4">
-            <div
-              className={cn(
-                "flex items-center gap-1 hover:text-black cursor-pointer",
-                {
-                  "text-blue-800": time,
-                }
-              )}
-            >
-              <LuTimer />
-              <span>time</span>
-            </div>
-            <span
-              className={cn("hover:text-black cursor-pointer", {
-                "text-blue-800": timeSelected == 1,
-              })}
-              onClick={() => {
-                setTimer("01:00");
-                setTimeSelected(1);
-              }}
-            >
-              1
-            </span>
-            <span
-              className={cn("hover:text-black cursor-pointer", {
-                "text-blue-800": timeSelected == 2,
-              })}
-              onClick={() => {
-                setTimer("02:00");
-                setTimeSelected(2);
-              }}
-            >
-              2
-            </span>
-            <span
-              className={cn("hover:text-black cursor-pointer", {
-                "text-blue-800": timeSelected == 3,
-              })}
-              onClick={() => {
-                setTimer("03:00");
-                setTimeSelected(3);
-              }}
-            >
-              3
-            </span>
-            <span
-              className={cn("hover:text-black cursor-pointer", {
-                "text-blue-800": timeSelected == 4,
-              })}
-              onClick={() => {
-                setTimer("04:00");
-                setTimeSelected(4);
-              }}
-            >
-              4
-            </span>
-            <span
-              className={cn("hover:text-black cursor-pointer", {
-                "text-blue-800": timeSelected == 5,
-              })}
-              onClick={() => {
-                setTimer("05:00");
-                setTimeSelected(5);
-              }}
-            >
-              5
-            </span>
-            <span
-              className={cn("hover:text-black cursor-pointer", {
-                "text-blue-800": timeSelected == 10,
-              })}
-              onClick={() => {
-                setTimer("10:00");
-                setTimeSelected(10);
-              }}
-            >
-              10
-            </span>
-          </div>
           <div className="px-4">
             <div
               className={cn(
@@ -375,15 +296,10 @@ const Test = () => {
           </div>
         </div>
       </div>
-      <div
-        className={cn(
-          "w-[100%] my-[5rem] bg-gray-300 h-[17rem] overflow-auto py-4 px-6 rounded-lg select-none",
-          "container-scrollbar"
-        )}
-        style={{ fontSize }}
-      >
-        {testText}
+      <div className="my-[9rem] flex items-center justify-center" >
+        <AudioElement />
       </div>
+
       <p className="text-[1.2rem] font-semibold text-gray-500">{timer}</p>
       <textarea
         className={cn(
@@ -396,6 +312,8 @@ const Test = () => {
         onChange={(e) => handleOnChange(e)}
         onKeyDown={(e) => handleOnKeyDown(e)}
       />
+      <button className=" mt-4 border-2 border-gray-400 text-gray-400 font-bold hover:border-black hover:text-black hover:bg-white py-3 px-5 rounded-md"
+ >Submit</button>
       <ResultModal
         open={openModal}
         data={modalData}
@@ -407,4 +325,4 @@ const Test = () => {
   );
 };
 
-export default Test;
+export default StenoTest;
