@@ -5,21 +5,22 @@ import {
   deleteTest,
   getAllTests,
   updateTest,
+  getTestDetails
 } from "../controller/test.js";
-import { isAdmin } from "../controller/test.js";
 
 const router = Router();
 
 // Route to add a test (admin only)
-router.post("/add", authMiddleware, isAdmin, addTest);
+router.post("/add", authMiddleware, addTest);
 
 // Route to get all tests (no auth required)
 router.get("/", getAllTests);
+router.get("/:id", getTestDetails);
 
 // Route to update a test (admin only)
-router.put("/update/:id", authMiddleware, isAdmin, updateTest);
+router.put("/update/:id", authMiddleware, updateTest);
 
 // Route to delete a test (admin only)
-router.delete("/delete/:id", authMiddleware, isAdmin, deleteTest);
+router.delete("/delete/:id", authMiddleware, deleteTest);
 
 export default router;

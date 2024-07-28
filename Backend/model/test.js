@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const testSchema = new mongoose.Schema({
+const typingTestSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -13,11 +13,6 @@ const testSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  serialNumber: {
-    type: Number,
-    required: true,
-    unique: true,
-  },
   total_words: {
     type: Number,
     required: true,
@@ -28,6 +23,6 @@ const testSchema = new mongoose.Schema({
   },
 });
 
-const Test = mongoose.model("Test", testSchema);
+const TypingTest = mongoose.model("TypingTest", typingTestSchema);
 
-export default Test;
+export default TypingTest;

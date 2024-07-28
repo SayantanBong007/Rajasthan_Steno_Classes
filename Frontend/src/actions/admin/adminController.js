@@ -15,10 +15,10 @@ export async function addTypingTest(data) {
       data,
       config
     );
-
-    if (response.data.success) {
+    console.log(response);
+    if (response.data) {
       return {
-        success: response.data.success,
+        success: true,
         message: "Registration Success",
       };
     } else {
