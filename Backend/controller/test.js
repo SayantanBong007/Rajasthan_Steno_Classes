@@ -3,18 +3,22 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 
 // Create a new test
 const addTest = asyncHandler(async (req, res) => {
-  const { name, language, serialNumber, total_words, text } = req.body;
+  const { testName, text, audioURL } = req.body;
+
+  if (!testName || !text || !audioURL) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Missing required fields" });
+  }
 
   const newTest = new Test({
-    name,
-    language,
-    serialNumber,
-    total_words,
+    testName,
     text,
+    audioURL,
   });
 
   const savedTest = await newTest.save();
-  res.status(201).json(savedTest);
+  res.status(201).json({ success: true, data: savedTest });
 });
 
 // Get all tests

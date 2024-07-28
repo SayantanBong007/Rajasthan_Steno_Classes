@@ -35,3 +35,31 @@ export async function addTypingTest(data) {
     };
   }
 }
+
+export async function addStenoTest(data) {
+  try {
+    const response = await axios.post(
+      `${base_url}/api/v1/admin/add/steno-test`,
+      data,
+      config
+    );
+
+    if (response.data.success) {
+      return {
+        success: response.data.success,
+        message: "Steno Test Added Successfully",
+      };
+    } else {
+      return {
+        success: false,
+        message: "Failed to Add Steno Test",
+      };
+    }
+  } catch (error) {
+    console.log("Error in addStenoTest function:", error.response.data);
+    return {
+      success: false,
+      message: "Failed to Add Steno Test",
+    };
+  }
+}
