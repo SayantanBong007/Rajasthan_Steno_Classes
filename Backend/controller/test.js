@@ -1,8 +1,16 @@
-import Test from "../model/test.js";
+import TypingTest from "../model/test.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 
 // Create a new test
 const addTest = asyncHandler(async (req, res) => {
+  const { name, language, text } = req.body;
+
+  const total_words = text.trim().split(" ").length;
+
+  const newTest = new TypingTest({
+    name,
+    language,
+    total_words,
   const { testName, text, audioURL } = req.body;
 
   if (!testName || !text || !audioURL) {
@@ -16,14 +24,14 @@ const addTest = asyncHandler(async (req, res) => {
     text,
     audioURL,
   });
-
+  console.log(newTest);
   const savedTest = await newTest.save();
   res.status(201).json({ success: true, data: savedTest });
 });
 
 // Get all tests
 const getAllTests = asyncHandler(async (req, res) => {
-  const tests = await Test.find();
+  const tests = await TypingTest.find();
   res.status(200).json(tests);
 });
 
@@ -54,4 +62,15 @@ const deleteTest = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Test deleted successfully" });
 });
 
-export { addTest, getAllTests, updateTest, deleteTest };
+// Delete a test by ID
+const getTestDetails = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const test = await TypingTest.findOne({ _id: id });
+  if (!test) {
+    return res.status(404).json({ message: "Test not found" });
+  }
+
+  res.status(200).json({ success: true, test });
+});
+
+export { addTest, getAllTests, updateTest, deleteTest, getTestDetails };

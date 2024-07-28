@@ -22,135 +22,124 @@ const RouteViews = () => {
   const [user, setUser] = useState({});
   let { pathname } = useLocation();
 
-  // useEffect(() => {
-  //   console.log(pathname);
-  //   if (!user) {
-  //     if (pathname != "/" && pathname != "/login" && pathname != "/register")
-  //       navigate("/");
-  //   } else {
-  //     if (pathname == "/" || pathname == "/login" || pathname == "/register")
-  //       navigate("/profile");
-  //     if (pathname == "/admin" && user.role != "admin") navigate("profile");
-  //   }
-  // }, []);
+  useEffect(() => {
+    console.log(pathname);
+    if (!user) {
+      if (pathname != "/" && pathname != "/login" && pathname != "/register")
+        navigate("/");
+    } else {
+      if (Object.keys(user).length != 0) {
+        console.log("user role", user, user.role);
+        if (user.role != "admin" && pathname == "/admin") navigate("profile");
+        if (pathname == "/" || pathname == "/login" || pathname == "/register")
+          navigate("/profile");
+      }
+    }
+  }, [user]);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     const { resUser } = await getUserDetails();
-  //     setUser(resUser);
-  //     console.log(resUser);
-  //   })();
-  // }, []);
-
-  // return (
-  //   <Routes>
-  //     {!user && (
-  //       <>
-  //         <Route
-  //           exact
-  //           path="/"
-  //           element={
-  //             <>
-  //               <Navbar />
-  //               <Home />
-  //               <Footer />
-  //             </>
-  //           }
-  //         />
-  //         <Route exact path="/register" element={<Register />} />
-  //         <Route exact path="/login" element={<Login />} />
-  //       </>
-  //     )}
-  //     {user && (
-  //       <>
-  //         <Route exact path="/typing-tests" element={<TypingTests />} />
-  //         <Route exact path="/typing-tests/hindi" element={<HindiTest />} />
-  //         <Route exact path="/typing-tests/:id" element={<Test />} />
-  //       </>
-  //     )}
-  //     {user && user.role == "admin" && (
-  //       <Route exact path="/admin" element={<AdminPage />} />
-  //     )}
-  //     <Route path="*" element={<Page404 />} />
-  //   </Routes>
-  // );
+  useEffect(() => {
+    (async () => {
+      const { resUser } = await getUserDetails();
+      setUser(resUser);
+      console.log("htis is user", resUser);
+    })();
+  }, [pathname]);
 
   return (
     <Routes>
-      <Route
-        exact
-        path="/"
-        element={
-          <>
-            <Navbar />
-            <Home />
-            <Footer />
-          </>
-        }
-      />
-      <Route exact path="/register" element={<Register />} />
-      <Route exact path="/login" element={<Login />} />
-      <Route
-        exact
-        path="/typing-tests"
-        element={
-          <>
-            <Navbar />
-            <TypingTests />
-          </>
-        }
-      />
-      <Route
-        exact
-        path="/typing-tests/hindi"
-        element={
-          <>
-            <Navbar />
-            <HindiTest />
-          </>
-        }
-      />
-      <Route
-        exact
-        path="/typing-tests/:id"
-        element={
-          <>
-            <Navbar />
-            <Test />
-          </>
-        }
-      />
-      <Route
-        exact
-        path="/steno-tests"
-        element={
-          <>
-            <Navbar />
-            <StenoTests />
-          </>
-        }
-      />
-      <Route
-        exact
-        path="/steno-tests/:id"
-        element={
-          <>
-            <Navbar />
-            <StenoTest />
-          </>
-        }
-      />
-      <Route exact path="/admin" element={<AdminPage />} />
-      <Route
-        exact
-        path="/profile"
-        element={
-          <>
-            <Navbar />
-            <ProfilePage />
-          </>
-        }
-      />
+      {!user && (
+        <>
+          <Route
+            exact
+            path="/"
+            element={
+              <>
+                <Navbar isAuth={false} />
+                <Home />
+                <Footer />
+              </>
+            }
+          />
+          <Route exact path="/register" element={<Register />} />
+          <Route exact path="/login" element={<Login />} />
+        </>
+      )}
+      {user && (
+        <>
+          <Route
+            exact
+            path="/typing-tests"
+            element={
+              <>
+                <Navbar iaAuth={true} />
+                <TypingTests />
+              </>
+            }
+          />
+          <Route
+            exact
+            path="/typing-tests/hindi"
+            element={
+              <>
+                <Navbar isAuth={true} />
+                <HindiTest />
+              </>
+            }
+          />
+          <Route
+            exact
+            path="/typing-tests/:id"
+            element={
+              <>
+                <Navbar isAuth={true} />
+                <Test />
+              </>
+            }
+          />
+          <Route
+            exact
+            path="/steno-tests"
+            element={
+              <>
+                <Navbar isAuth={true} />
+                <StenoTests />
+              </>
+            }
+          />
+          <Route
+            exact
+            path="/steno-tests/:id"
+            element={
+              <>
+                <Navbar isAuth={true} />
+                <StenoTest />
+              </>
+            }
+          />
+          <Route
+            exact
+            path="/profile"
+            element={
+              <>
+                <Navbar isAuth={true} />
+                <ProfilePage />
+              </>
+            }
+          />
+        </>
+      )}
+      {user && user.role == "admin" && (
+        <Route
+          exact
+          path="/admin"
+          element={
+            <>
+              {" "}
+              <Navbar isAuth={true} /> <AdminPage />
+            </>
+          }
+        />
+      )}
       <Route path="*" element={<Page404 />} />
     </Routes>
   );

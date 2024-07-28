@@ -21,9 +21,21 @@ const AddTypingTestModal = ({ open, setTypingTestModal }) => {
     if (!testName || !text || !lang)
       toast.error("Please complete all the fields!");
 
-    const response = await addTypingTest({ testName, text, lang });
+    const { success, message } = await addTypingTest({
+      name: testName,
+      text: text.trim(),
+      language: lang,
+    });
 
-    console.log("create typing test");
+    if (success) {
+      toast.success("test created successfully!");
+      handleClose();
+    } else {
+      toast.error(message);
+      handleClose();
+    }
+
+
   };
 
   if (open) {
