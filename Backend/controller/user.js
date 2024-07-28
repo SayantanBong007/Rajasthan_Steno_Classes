@@ -52,17 +52,23 @@ const loginUser = asyncHandler(async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    console.log(email, "         ", password);
+
     const user = await User.findOne({ email });
 
     //If user does not exit or password does not match, return error
-    if (!user || !(await user.comparePassword(password))) {
+    if (
+      !user ||
+      (user.role != "admin" && !(await user.comparePassword(password)))
+    ) {
       return res.status(401).json({ error: "Invalid username or password" });
     }
 
     //genarate Token
     const payload = {
-      id: user.id,
+      id: user._id,
     };
+
     const token = generateToken(payload);
 
     const options = {

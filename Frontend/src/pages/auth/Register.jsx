@@ -41,6 +41,7 @@ const Register = () => {
         return;
       }
 
+
       const { success, message } = await register({
         fullName,
         email,
@@ -50,7 +51,7 @@ const Register = () => {
 
       if (success) {
         toast.success("Registration successful!");
-        navigate("/login"); // Redirect to Sign In page
+        navigate("/profile"); // Redirect to Sign In page
       } else {
         toast.error(message);
       }

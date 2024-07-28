@@ -89,3 +89,51 @@ export async function getUserDetails() {
     };
   }
 }
+
+export async function getTypingTests() {
+  try {
+    const response = await axios.get(`${base_url}/api/v1/typingTests/`, config);
+
+    if (response.data.success) {
+      return {
+        success: response.data.success,
+        message: "Registration Success",
+        resUser: response.data.user,
+      };
+    } else {
+      return {
+        success: false,
+        message: "Registration Failed ",
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      message: "Registration Failed ",
+    };
+  }
+}
+
+export async function getTestDetails(id) {
+  try {
+    const response = await axios.get(`${base_url}/api/v1/typingTests/${id}`, config);
+    console.log("response", response)
+    if (response.data.success) {
+      return {
+        success: response.data.success,
+        test: response.data.test,
+      };
+    } else {
+      return {
+        success: false,
+      };
+    }
+  } catch (error) {
+    console.log(error);
+    return {
+      success: false,
+      message: "fetching details failed ",
+    };
+  }
+}
