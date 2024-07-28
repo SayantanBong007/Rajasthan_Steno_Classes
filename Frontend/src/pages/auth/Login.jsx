@@ -49,7 +49,7 @@ const Login = () => {
   };
 
   return (
-    <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-r from-orange-100 to-red-100">
+    <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-r from-orange-50 to-red-50">
       <div className="bg-white rounded-lg shadow-lg flex overflow-hidden w-11/12 max-w-4xl">
         {/* Left side image and branding */}
         <div className="w-1/2 hidden md:block relative">
@@ -59,7 +59,6 @@ const Login = () => {
             className="object-cover w-full h-full"
           />
           <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-white p-4">
-            <img src="/logo.png" width="80" height="80" alt="Logo" />
             <h1 className="text-2xl font-bold mt-4">Gurukul Steno Classes</h1>
             <p className="text-center mt-2">
               Join our Platform to make Your Score Better & Practice well!
@@ -68,7 +67,10 @@ const Login = () => {
         </div>
 
         {/* Right side login form */}
-        <div className="w-full md:w-1/2 p-8 flex flex-col justify-center">
+        <div className="w-full md:w-1/2 px-8 py-3 flex flex-col justify-center">
+          <div className="flex items-center justify-center pb-5 ">
+            <img src="/logo.png" width="80" height="80" alt="Logo" />
+          </div>
           <h2 className="text-3xl font-bold text-center mb-6">
             {loading ? "Loading..." : "Sign in"}
           </h2>

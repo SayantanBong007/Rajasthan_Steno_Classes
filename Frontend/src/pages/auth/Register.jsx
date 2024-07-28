@@ -63,7 +63,7 @@ const Register = () => {
   };
 
   return (
-    <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-r from-orange-100 to-red-100">
+    <div className="h-screen w-screen flex items-center justify-center bg-gradient-to-r from-orange-50 to-red-50">
       <div className="bg-white rounded-lg shadow-lg flex overflow-hidden w-11/12 max-w-4xl">
         {/* Left side image and branding */}
         <div className="w-1/2 hidden md:block relative">

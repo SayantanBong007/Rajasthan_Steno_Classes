@@ -4,14 +4,16 @@ const AudioElement = () => {
   const audio = useRef();
   const [progress, setProgress] = useState(0);
   const [audioSource, setAudioSource] = useState(
-    "https://actions.google.com/sounds/v1/emergency/emergency_siren_close_long.ogg"
+    "https://res.cloudinary.com/dmicop9hj/video/upload/v1720166987/AUD-20240630-WA0005_nn46bq.mp3"
   );
   const [value, setValue] = useState(100);
 
   useEffect(() => {
     let aud = audio.current;
     aud.ontimeupdate = () => {
-      setProgress((aud.currentTime / aud.duration) * 100);
+      setProgress(
+        (aud.currentTime ? audio.currentTime : 0 / aud.duration) * 100
+      );
     };
   }, [audio]);
 
@@ -26,8 +28,8 @@ const AudioElement = () => {
       <div>
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-center font-bold text-gray-700">
-            {audio.current.currentTime.toFixed(1)}s /{" "}
-            {audio.current.duration.toFixed(1)}s
+            {audio.current?.currentTime.toFixed(1)}s /{" "}
+            {audio.current?.duration.toFixed(1)}s
           </div>
           <div>
             <div className="w-[30rem] bg-gray-400 h-[0.4rem] rounded-lg">

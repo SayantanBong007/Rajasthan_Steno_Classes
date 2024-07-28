@@ -23,6 +23,7 @@
     "react-router-dom": "^6.23.1",
     "react-table": "^7.8.0",
     "tailwind-merge": "^2.3.0",
+    "typewriter-effect": "^2.21.0",
     "webfontloader": "^1.6.28"
   },
   "devDependencies": {

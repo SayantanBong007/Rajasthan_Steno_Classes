@@ -242,7 +242,7 @@ const StenoTest = () => {
   }, [inputText]);
 
   return (
-    <main className="flex flex-col min-h-[100vh] pb-10 bg-gray-100 px-20">
+    <main className="flex flex-col min-h-[80vh] pb-10 bg-gray-100 px-20">
       <div className="flex items-center gap-10">
         <h1 className="text-[2rem] text-center mt-10 font-medium justify-self-start">
           Test Name
@@ -296,14 +296,14 @@ const StenoTest = () => {
           </div>
         </div>
       </div>
-      <div className="my-[9rem] flex items-center justify-center" >
+      <div className="my-[5rem] flex items-center justify-center">
         <AudioElement />
       </div>
 
       <p className="text-[1.2rem] font-semibold text-gray-500">{timer}</p>
       <textarea
         className={cn(
-          "w-[100%] h-[17rem] overflow-auto py-4 px-6 rounded-lg select-none border-[0.1rem] border-gray-400",
+          "w-[100%] h-[25rem] overflow-auto py-4 px-6 rounded-lg select-none border-[0.1rem] border-gray-400",
           "container-scrollbar"
         )}
         style={{ fontSize }}
@@ -312,8 +312,9 @@ const StenoTest = () => {
         onChange={(e) => handleOnChange(e)}
         onKeyDown={(e) => handleOnKeyDown(e)}
       />
-      <button className=" mt-4 border-2 border-gray-400 text-gray-400 font-bold hover:border-black hover:text-black hover:bg-white py-3 px-5 rounded-md"
- >Submit</button>
+      <button className=" mt-4 border-2 border-gray-400 text-gray-400 font-bold hover:border-black hover:text-black hover:bg-white py-3 px-5 rounded-md">
+        Submit
+      </button>
       <ResultModal
         open={openModal}
         data={modalData}
