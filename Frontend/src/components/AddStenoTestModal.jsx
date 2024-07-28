@@ -23,7 +23,7 @@ const AddStenoTestModal = ({ open, setStenoTestModal }) => {
       // Upload audio file to Cloudinary
       const formData = new FormData();
       formData.append("file", audioFile);
-      formData.append("upload_preset", "ml_default");
+      formData.append("upload_preset", "ml_default1");
 
       const uploadRes = await axios.post(
         "https://api.cloudinary.com/v1_1/dy9spksm1/upload",
@@ -44,8 +44,16 @@ const AddStenoTestModal = ({ open, setStenoTestModal }) => {
         toast.error(response.message);
       }
     } catch (error) {
-      console.error("Error creating steno test:", error);
-      toast.error("Failed to create steno test");
+      if (error.response) {
+        console.error("Error creating steno test:", error.response.data);
+        toast.error(`Error: ${error.response.data.message}`);
+      } else if (error.request) {
+        console.error("No response received:", error.request);
+        toast.error("No response from server");
+      } else {
+        console.error("Error", error.message);
+        toast.error(`Error: ${error.message}`);
+      }
     }
   };
 
@@ -61,7 +69,7 @@ const AddStenoTestModal = ({ open, setStenoTestModal }) => {
           <input
             type="text"
             placeholder="Test name"
-            className="bg-transparent my-3 w-[100%] rounded-lg border-solid border-2 border-gray-300 hover:border-gray-400 focus:border-gray-400 px-6 py-4 bg-gray-200 "
+            className="bg-transparent my-3 w-[100%] rounded-lg border-solid border-2 border-gray-300 hover:border-gray-400 focus:border-gray-400 px-6 py-4 bg-gray-200"
             value={testName}
             onChange={(e) => setTestName(e.target.value)}
           />

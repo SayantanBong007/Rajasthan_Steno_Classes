@@ -221,22 +221,7 @@ const StenoTest = () => {
 
   useEffect(() => {
     (function () {
-      const providedText = ` This   is the entire text lorem ipsum m Ipsum is simply dummy text of the
-        printing and typesetting industry. Lorem Ipsum has been the industry's
-        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
-        printing and typesetting industry. Lorem Ipsum has been the industry's
-        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
-        printing and typesetting industry. Lorem Ipsum has been the industry's
-        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
-        printing and typesetting industry. Lorem Ipsum has been the industry's
-        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
-        printing and typesetting industry. Lorem Ipsum has been the industry's
-        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
-        printing and typesetting industry. Lorem Ipsum has been the industry's
-        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
-        printing and typesetting industry. Lorem Ipsum has been the industry's
-        "This is the entire text lorem ipsum m Ipsum is simply dummy text of the
-        printing and typesetting industry. Lorem Ipsum has been the industrys`;
+      const providedText = ` हिन्दू धर्म में गंगा के लिए असीम श्रद्धा और मान्यता है। गंगा हमारे लिए केवल नदी नहीं, बल्कि पवित्रता का प्रवाह है। ऐसा माना जाता है कि सूर्य की किरणों से निकलने वाले जीवन ऊर्जा को व्यक्त करने की क्षमता केवल गंगा और गंगा में ही है, इसलिए गंगा का स्मरण-पूजन करने से हमारे देवता स्वतः प्रसन्न हो जाते हैं। मां गंगा योग सिद्धिका है। वह ब्रह्म के कमंडल से निकलकर ज्ञान योग भगवान विष्णु के चरणों का स्पर्श करते हुए भक्ति योग और शिव की जटाओं से होकर बहती है, इसलिए साधना योग सिद्ध करती है। धरती पर गंगा का अवतरण ही पितरों के मोक्ष के लिए हुआ था। मां गंगा को लेकर हम भारतीयों में श्रद्धा और विश्वास इतना प्रबल है कि मृत्यु के उपरांत भी जीव अपने मोक्ष के लिए गंगा के आश्रय में रहना चाहता है। गंगाजल में मृतकों की अस्थि विसर्जित कर उनका पुनर्जन्म सुनिश्चित कर दिया जाता है। वर्तमान में गंगा की स्थिति अत्यंत ओछी हो रही है। आज वैज्ञानिक भौतिक सुखों की प्राप्ति के लिए गंगा के प्रवाह को बाधित किया जा रहा है। हमें यह समझने की आवश्यकता है कि प्रदूषण के युक्त और मार्ग बाधित गंगा मानवता के लिए अभिशाप है। गंगा की पवित्रता सुनिश्चित करने के लिए सामूहिक प्रयास करें, क्योंकि गंगा सबकी है। वह अपने गर्भ में अनेक जीव प्रजातियां, वनस्पतियाँ और संस्कृतियों को युगों-युगांतर से पोषित करती आई है। गंगा के नष्ट होने से मानवता की एक रसमयी सांस्कृतिक परंपरा का भी अंत हो जाएगा। इस बात की सराहना है कि प्रधानमंत्री के नेतृत्व में नमामि गंगे योजना के माध्यम से गंगा की स्वच्छता और पवित्रता के लिए अनेक संयुक्त प्रयास किए जा रहे हैं, लेकिन सरकारी कार्यों और योजनाओं से हटकर भी गंगा की पवित्रता बनाए रखने के लिए सामूहिक सहभागिता और जन-जागरूकता की आवश्यकता है। गंगा तट पर गंगा की स्वच्छता के लिए अपने उत्तरदायित्व की अनुभूति करें। सर्वजन कल्याण का विषय है। पवित्र और स्वच्छ गंगा राष्ट्रीय जीवन से जुड़ी सर्वजन कल्याण नदी है। गंगा को लेकर अनेक आंदोलन चले, आज भी चल रहे हैं। केंद्र इन्हें कार्यदल की तरह लेता है।`;
       setTestText(providedText.trim());
     })();
   }, [inputText]);

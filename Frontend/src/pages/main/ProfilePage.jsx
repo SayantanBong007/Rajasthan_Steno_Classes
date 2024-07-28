@@ -1,78 +1,39 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FaUserAlt, FaHistory } from "react-icons/fa";
+import axios from "axios";
+
+const base_url = "http://localhost:4000";
+
+const config = {
+  headers: { "Content-Type": "application/json" },
+  withCredentials: true,
+};
 
 const ProfilePage = () => {
-  // Sample user data
-  const user = {
-    name: "Sayantan Gain",
-    email: "sam.gain@example.com",
-    phone: "+91234567890",
-    history: [
-      // {
-      //   type: "Typing Test",
-      //   date: "2024-01-15",
-      //   score: "95 WPM",
-      //   accuracy: "99%",
-      //   language: "English",
-      // },
-      // {
-      //   type: "Steno Test",
-      //   date: "2024-01-10",
-      //   score: "120 WPM",
-      //   accuracy: "95%",
-      //   language: "English",
-      // },
-      // {
-      //   type: "Typing Test",
-      //   date: "2024-01-05",
-      //   score: "90 WPM",
-      //   accuracy: "97%",
-      //   language: "Hindi",
-      // },
-      // {
-      //   type: "Typing Test",
-      //   date: "2024-01-05",
-      //   score: "90 WPM",
-      //   accuracy: "97%",
-      //   language: "Hindi",
-      // },
-      // {
-      //   type: "Typing Test",
-      //   date: "2024-01-05",
-      //   score: "90 WPM",
-      //   accuracy: "97%",
-      //   language: "Hindi",
-      // },
-      // {
-      //   type: "Typing Test",
-      //   date: "2024-01-05",
-      //   score: "90 WPM",
-      //   accuracy: "97%",
-      //   language: "Hindi",
-      // },
-      // {
-      //   type: "Typing Test",
-      //   date: "2024-01-05",
-      //   score: "90 WPM",
-      //   accuracy: "97%",
-      //   language: "Hindi",
-      // },
-      // {
-      //   type: "Typing Test",
-      //   date: "2024-01-05",
-      //   score: "90 WPM",
-      //   accuracy: "97%",
-      //   language: "Hindi",
-      // },
-      // {
-      //   type: "Typing Test",
-      //   date: "2024-01-05",
-      //   score: "90 WPM",
-      //   accuracy: "97%",
-      //   language: "Hindi",
-      // },
-    ],
-  };
+  const [user, setUser] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    history: [],
+  });
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const response = await axios.get(`${base_url}/api/v1/user/`, config);
+
+        if (response.data.success) {
+          setUser(response.data.user);
+        } else {
+          console.log("Failed to fetch user details.");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchUserDetails();
+  }, []);
 
   return (
     <div className="min-h-screen bg-gray-100 flex justify-center p-10">
