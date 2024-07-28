@@ -35,7 +35,7 @@ const Navbar = ({ isAuth }) => {
             <h1 className="ml-2">|</h1>
           </div>
 
-          {false ? (
+          {true ? (
             <>
               <div className="flex flex-row items-center">
                 <div className="rounded-full bg-white/20 p-2 flex items-center justify-center">

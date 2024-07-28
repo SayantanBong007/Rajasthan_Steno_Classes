@@ -8,75 +8,75 @@ const ProfilePage = () => {
     email: "sam.gain@example.com",
     phone: "+91234567890",
     history: [
-      {
-        type: "Typing Test",
-        date: "2024-01-15",
-        score: "95 WPM",
-        accuracy: "99%",
-        language: "English",
-      },
-      {
-        type: "Steno Test",
-        date: "2024-01-10",
-        score: "120 WPM",
-        accuracy: "95%",
-        language: "English",
-      },
-      //   {
-      //     type: "Typing Test",
-      //     date: "2024-01-05",
-      //     score: "90 WPM",
-      //     accuracy: "97%",
-      //     language: "Hindi",
-      //   },
-      //   {
-      //     type: "Typing Test",
-      //     date: "2024-01-05",
-      //     score: "90 WPM",
-      //     accuracy: "97%",
-      //     language: "Hindi",
-      //   },
-      //   {
-      //     type: "Typing Test",
-      //     date: "2024-01-05",
-      //     score: "90 WPM",
-      //     accuracy: "97%",
-      //     language: "Hindi",
-      //   },
-      //   {
-      //     type: "Typing Test",
-      //     date: "2024-01-05",
-      //     score: "90 WPM",
-      //     accuracy: "97%",
-      //     language: "Hindi",
-      //   },
-      //   {
-      //     type: "Typing Test",
-      //     date: "2024-01-05",
-      //     score: "90 WPM",
-      //     accuracy: "97%",
-      //     language: "Hindi",
-      //   },
-      //   {
-      //     type: "Typing Test",
-      //     date: "2024-01-05",
-      //     score: "90 WPM",
-      //     accuracy: "97%",
-      //     language: "Hindi",
-      //   },
-      //   {
-      //     type: "Typing Test",
-      //     date: "2024-01-05",
-      //     score: "90 WPM",
-      //     accuracy: "97%",
-      //     language: "Hindi",
-      //   },
+      // {
+      //   type: "Typing Test",
+      //   date: "2024-01-15",
+      //   score: "95 WPM",
+      //   accuracy: "99%",
+      //   language: "English",
+      // },
+      // {
+      //   type: "Steno Test",
+      //   date: "2024-01-10",
+      //   score: "120 WPM",
+      //   accuracy: "95%",
+      //   language: "English",
+      // },
+      // {
+      //   type: "Typing Test",
+      //   date: "2024-01-05",
+      //   score: "90 WPM",
+      //   accuracy: "97%",
+      //   language: "Hindi",
+      // },
+      // {
+      //   type: "Typing Test",
+      //   date: "2024-01-05",
+      //   score: "90 WPM",
+      //   accuracy: "97%",
+      //   language: "Hindi",
+      // },
+      // {
+      //   type: "Typing Test",
+      //   date: "2024-01-05",
+      //   score: "90 WPM",
+      //   accuracy: "97%",
+      //   language: "Hindi",
+      // },
+      // {
+      //   type: "Typing Test",
+      //   date: "2024-01-05",
+      //   score: "90 WPM",
+      //   accuracy: "97%",
+      //   language: "Hindi",
+      // },
+      // {
+      //   type: "Typing Test",
+      //   date: "2024-01-05",
+      //   score: "90 WPM",
+      //   accuracy: "97%",
+      //   language: "Hindi",
+      // },
+      // {
+      //   type: "Typing Test",
+      //   date: "2024-01-05",
+      //   score: "90 WPM",
+      //   accuracy: "97%",
+      //   language: "Hindi",
+      // },
+      // {
+      //   type: "Typing Test",
+      //   date: "2024-01-05",
+      //   score: "90 WPM",
+      //   accuracy: "97%",
+      //   language: "Hindi",
+      // },
     ],
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex justify-center items-center p-4">
-      <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-3xl flex flex-col overflow-hidden max-h-[800px] border border-gray-200">
+    <div className="min-h-screen bg-gray-100 flex justify-center p-10">
+      <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-8xl flex flex-col overflow-hidden max-h-[800px] border border-gray-200">
         {/* User Logo */}
         <div className="flex justify-center mb-4">
           <FaUserAlt
