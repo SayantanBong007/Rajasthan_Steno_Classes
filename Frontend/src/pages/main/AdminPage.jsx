@@ -7,6 +7,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import { Navigate, useNavigate } from "react-router-dom";
 import AddTypingTestModal from "../../components/AddTypingTestModal";
 import DeleteTestModal from "../../components/DeleteTestModal";
+import AddStenoTestModal from "../../components/AddStenoTestModal";
 
 const AdminPage = () => {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ const AdminPage = () => {
   const [data, setData] = useState([]);
   const [typingTestModal, setTypingTestModal] = useState(false);
   const [deleteTestModal, setDeleteTestModal] = useState(false);
+  const [stenoTestModal, setStenoTestModal] = useState(false);
 
   const handleDeleteTypingTest = (id, e) => {
     if (e && e.stopPropagation) e.stopPropagation();
@@ -64,6 +66,10 @@ const AdminPage = () => {
     setTypingTestModal(true);
   };
 
+  const handleOpenStenoTestModal = () => {
+    setStenoTestModal(true);
+  };
+
   return (
     <main className="w-[100%] bg-gray-100">
       <div className=" flex flex-col w-[80%] pb-20 mx-auto min-h-[100vh]">
@@ -86,11 +92,15 @@ const AdminPage = () => {
             "container-scrollbar"
           )}
         >
-          <Table columns={typingTestColumns} data={data} typeOfTests="typing-tests" />
+          <Table
+            columns={typingTestColumns}
+            data={data}
+            typeOfTests="typing-tests"
+          />
         </div>
         <div className="mt-[3rem] mb-[1rem] flex items-center justify-between">
           <h2 className="text-[1.8rem]">Steno tests</h2>
-          <ActionButton title={"Add"} />
+          <ActionButton title={"Add"} onClick={handleOpenStenoTestModal} />
         </div>
         <div
           className={cn(
@@ -98,7 +108,11 @@ const AdminPage = () => {
             "container-scrollbar"
           )}
         >
-          <Table columns={typingTestColumns} data={data} typeOfTests="steno-tests" />
+          <Table
+            columns={typingTestColumns}
+            data={data}
+            typeOfTests="steno-tests"
+          />
         </div>
       </div>
       <DeleteTestModal
@@ -108,6 +122,10 @@ const AdminPage = () => {
       <AddTypingTestModal
         open={typingTestModal}
         setTypingTestModal={setTypingTestModal}
+      />
+      <AddStenoTestModal
+        open={stenoTestModal}
+        setStenoTestModal={setStenoTestModal}
       />
     </main>
   );
